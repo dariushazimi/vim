@@ -1,12 +1,6 @@
-
-set nocp
-set nocompatible    " use vim defaults
-
+set nocompatible    " we want the latest vim settings
 
 so $HOME/.vim/plugins.vim
-
-
-set ls=2            " allways show status line
 
 
 "-------------General Settings--------------"
@@ -198,9 +192,9 @@ map ,ft :%s/	/    /g<CR> " replace all tabs with 4 spaces
 map ,d :call <SID>SCMDiff()<CR>
 
 
+" Make Nerdtree easier to toggle
 
-
-
+nmap <Leader>. :NERDTreeToggle<cr>
 "-------------------------- Viewport Controls -----------"
 " ie moving between split panes
 set splitbelow
@@ -219,9 +213,10 @@ map <silent><C-right> <C-]> " follow a python function
 "-------------Visuals-----------------------------------"
 "
 
-syntax on                 " syntax highlighing
+syntax on                    " syntax highlighing
 
-set linespace=15   					    "Macvim-specific line-height.
+set ls=2                     " allways show status line
+set linespace=15   			 " Macvim-specific line-height.
 colorscheme badwolf  
 "-------------------------Tips and Tricks --------------"
 "
@@ -235,4 +230,9 @@ colorscheme badwolf
 "    :echo expand('%:p') 
 
 " :bp to go to your previous location
-
+" vim-vinegar allows you to use - to move up a folder
+"       d will create a folder
+"       D will detele a file, or if you are on a file name, Capital D will 
+" detele the file -
+"       % will create a new file (so click - first and then %) 
+"
