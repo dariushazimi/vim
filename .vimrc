@@ -1,13 +1,17 @@
 
 set nocp
 set nocompatible    " use vim defaults
+
+
+so $HOME/.vim/plugins.vim
+
+
 set ls=2            " allways show status line
+
 
 "-------------General Settings--------------"
 set backspace=indent,eol,start          "Make backspace behave like every other editor.
 let mapleader = ',' 			      	"The default leader is \, but a comma is much better.
-set linespace=15   						        "Macvim-specific line-height.
-
 " Put your non-Plugin stuff after this line
 set tabstop=4       " numbers of spaces of tab character
 set shiftwidth=4    " numbers of spaces to (auto)indent
@@ -24,7 +28,6 @@ set number          " show line numbers
 set numberwidth=4   " line numbering takes up 5 spaces
 set ignorecase      " ignore case when searching
 set nowrap          " stop lines from wrapping
-set noignorecase    " don't ignore case
 set smartcase       " But become case sensitive if you type uppsercase
 set title           " don't show "Thanks for flying vim"
 set ttyfast         " smoother changes
@@ -45,20 +48,6 @@ set smartindent   " turn off by default, enable for specific filetypes/bs
 set smarttab       " turn off by default, enable for specific filetypes
 
 
-" set the runtime path to include Vundle and initialize
-set rtp+=%USERPROFILE%/.vim/bundle/Vundle.vim
-call vundle#begin()
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'auto-pairs'
-Plugin 'lightline.vim'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-
 "-------------General Settings--------------"
 " NERD_tree config
 
@@ -66,6 +55,10 @@ let NERDTreeChDirMode=2
 let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\.bak$', '\~$']
 let NERDTreeShowBookmarks=1
+
+
+
+
 
 
 " Syntax for multiple tag files are
@@ -88,22 +81,6 @@ set sm              " show matching braces, somewhat annoying...
 
 " remove ALL auto-commands so there are no dupes
 autocmd!
-
-syntax on                 " syntax highlighing
-if has("gui_running")
-    " See ~/.gvimrc
-    set guifont=ProggyCleanTT\ 12.00  " use this font
-    set lines=50          " height = 50 lines
-    set columns=120       " width = 100 columns
-    set background=dark   " adapt colors for background
-    set guioptions-=T
-    set list listchars=tab:▷⋅,trail:⋅,nbsp:⋅ " mark trailing white space
-    colorscheme badwolf
-else
-    colorscheme badwolf   " use this color scheme
-    set background=dark   " adapt colors for background
-endif
-
 if has("autocmd")
     " Restore cursor position
     au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
@@ -134,7 +111,6 @@ if has("autocmd")
     au BufNewFile,BufRead  *.pls    set syntax=dosini
     au BufNewFile,BufRead  modprobe.conf    set syntax=modconf
 endif
-colorscheme badwolf  
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -186,10 +162,17 @@ map <C-a> <esc>ggVG<CR>     " # Select all lines in a doc
 set t_Co=256
 let g:Powerline_symbols = "fancy"
 
+
+
+
+
+
 "-------------Search--------------"
 
 set hlsearch        " highlight searches
 set incsearch       " do incremental searching
+
+
 
 
 
@@ -214,8 +197,14 @@ map ,p :Lodgeit<CR>         " pastes selection / file to paste.pocoo.org
 map ,ft :%s/	/    /g<CR> " replace all tabs with 4 spaces
 map ,d :call <SID>SCMDiff()<CR>
 
-" Viewport Controls
+
+
+
+
+"-------------------------- Viewport Controls -----------"
 " ie moving between split panes
+set splitbelow
+set splitright
 map <silent>,h <C-w>h 
 map <silent>,j <C-w>j
 map <silent>,k <C-w>k
@@ -224,9 +213,26 @@ map <silent>,l <C-w>l
 map <silent><C-left> <C-T>  " step out of a python function
 map <silent><C-right> <C-]> " follow a python function 
 
+
+
+
+"-------------Visuals-----------------------------------"
+"
+
+syntax on                 " syntax highlighing
+
+set linespace=15   					    "Macvim-specific line-height.
+colorscheme badwolf  
 "-------------------------Tips and Tricks --------------"
 "
 " ,ev  to open .vimrc file
-"
+" :sp, vsp for slit
+" :bp/n to go to previous or next buffer
+" Ctrl w and | to expant the vertical split and = to make them equal again
+" Ctrl w = to make them equal 
+" You can always see the full path to the current editfile by using 
 
+"    :echo expand('%:p') 
+
+" :bp to go to your previous location
 
