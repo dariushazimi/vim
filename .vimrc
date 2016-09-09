@@ -1,44 +1,13 @@
+
 set nocp
 set nocompatible    " use vim defaults
 set ls=2            " allways show status line
-" set the runtime path to include Vundle and initialize
-set rtp+=%USERPROFILE%/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+"-------------General Settings--------------"
+set backspace=indent,eol,start          "Make backspace behave like every other editor.
+let mapleader = ',' 			      	"The default leader is \, but a comma is much better.
+set linespace=15   						        "Macvim-specific line-height.
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-Plugin 'auto-pairs'
-Plugin 'lightline.vim'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 set tabstop=4       " numbers of spaces of tab character
 set shiftwidth=4    " numbers of spaces to (auto)indent
@@ -47,11 +16,7 @@ set showcmd         " display incomplete commands
 set showmatch
 set showmode        " show mode in status bar(insert/replace)
 set matchtime=2     " show matching bracket for 0.2 sec 
-
-set hlsearch        " highlight searches
-set incsearch       " do incremental searching
 set ruler           " show the cursor position all the time
-set laststatus=2
 set visualbell t_vb=    " turn off error beep/flash
 set novisualbell    " turn off visual bell
 set nobackup        " do not keep a backup file
@@ -59,10 +24,9 @@ set number          " show line numbers
 set numberwidth=4   " line numbering takes up 5 spaces
 set ignorecase      " ignore case when searching
 set nowrap          " stop lines from wrapping
-set noignorecase   " don't ignore case
+set noignorecase    " don't ignore case
 set smartcase       " But become case sensitive if you type uppsercase
-
-set title         " don't show "Thanks for flying vim"
+set title           " don't show "Thanks for flying vim"
 set ttyfast         " smoother changes
 "set ttyscroll=0        " turn off scrolling, didn't work well with PuTTY
 set bs=2            " Backspace can delete previous characters
@@ -80,14 +44,29 @@ set noautoindent    " turn off by default, enable for specific filetypes
 set smartindent   " turn off by default, enable for specific filetypes/bs
 set smarttab       " turn off by default, enable for specific filetypes
 
+
+" set the runtime path to include Vundle and initialize
+set rtp+=%USERPROFILE%/.vim/bundle/Vundle.vim
+call vundle#begin()
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plugin 'auto-pairs'
+Plugin 'lightline.vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+"-------------General Settings--------------"
 " NERD_tree config
+
 let NERDTreeChDirMode=2
 let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
 let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\.bak$', '\~$']
 let NERDTreeShowBookmarks=1
 
-" VCS Command Configs
-let mapleader = ","
 
 " Syntax for multiple tag files are
 " set tags=/my/dir1/tags, /my/dir2/tags
@@ -155,29 +134,6 @@ if has("autocmd")
     au BufNewFile,BufRead  *.pls    set syntax=dosini
     au BufNewFile,BufRead  modprobe.conf    set syntax=modconf
 endif
-
-" Keyboard mappings
-map <F1> :previous<CR>  " map F1 to open previous buffer
-map <F2> :next<CR>      " map F2 to open next buffer
-map <F3> :NERDTreeToggle<CR>" map F3 to open NERDTree
-map <F7> :TlistToggle<CR> " map F7 to toggle the Tag Listing
-map <silent> <C-N> :silent noh<CR> " turn off highlighted search
-map ,v :sp ~/.vimrc<cr> " edit my .vimrc file in a split
-map ,e :e ~/.vimrc<cr>      " edit my .vimrc file
-map ,u :source ~/.vimrc<cr> " update the system settings from my vimrc file
-map ,p :Lodgeit<CR>         " pastes selection / file to paste.pocoo.org
-map ,ft :%s/	/    /g<CR> " replace all tabs with 4 spaces
-map ,d :call <SID>SCMDiff()<CR>
-
-" Viewport Controls
-" ie moving between split panes
-map <silent>,h <C-w>h 
-map <silent>,j <C-w>j
-map <silent>,k <C-w>k
-map <silent>,l <C-w>l
-
-map <silent><C-left> <C-T>  " step out of a python function
-map <silent><C-right> <C-]> " follow a python function 
 colorscheme badwolf  
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_map = '<c-p>'
@@ -229,3 +185,48 @@ set bs=indent,eol,start " # Allow backspacing over everything in insert mode
 map <C-a> <esc>ggVG<CR>     " # Select all lines in a doc
 set t_Co=256
 let g:Powerline_symbols = "fancy"
+
+"-------------Search--------------"
+
+set hlsearch        " highlight searches
+set incsearch       " do incremental searching
+
+
+
+"-------------Mappings--------------"
+
+"Make it easy to edit the Vimrc file.
+nmap <Leader>ev :tabedit $MYVIMRC<cr>
+
+"Add simple highlight removal.
+nmap <Leader><space> :nohlsearch<cr>
+
+" Keyboard mappings
+map <F1> :previous<CR>  " map F1 to open previous buffer
+map <F2> :next<CR>      " map F2 to open next buffer
+map <F3> :NERDTreeToggle<CR>" map F3 to open NERDTree
+map <F7> :TlistToggle<CR> " map F7 to toggle the Tag Listing
+map <silent> <C-N> :silent noh<CR> " turn off highlighted search
+map ,v :sp ~/.vimrc<cr> " edit my .vimrc file in a split
+map ,e :e ~/.vimrc<cr>      " edit my .vimrc file
+map ,u :source ~/.vimrc<cr> " update the system settings from my vimrc file
+map ,p :Lodgeit<CR>         " pastes selection / file to paste.pocoo.org
+map ,ft :%s/	/    /g<CR> " replace all tabs with 4 spaces
+map ,d :call <SID>SCMDiff()<CR>
+
+" Viewport Controls
+" ie moving between split panes
+map <silent>,h <C-w>h 
+map <silent>,j <C-w>j
+map <silent>,k <C-w>k
+map <silent>,l <C-w>l
+
+map <silent><C-left> <C-T>  " step out of a python function
+map <silent><C-right> <C-]> " follow a python function 
+
+"-------------------------Tips and Tricks --------------"
+"
+" ,ev  to open .vimrc file
+"
+
+
