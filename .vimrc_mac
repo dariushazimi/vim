@@ -207,35 +207,6 @@ autocmd FileType python set sts=4
 "
 "colorscheme solarized
 " let g:solarized_termcolors=256
-"-------------------------Tips and Tricks --------------"
-" jump to the function definition using Ctrl-]
-" I jump to /path/not/knowable/BlaBlaClassName.php with gf,
-" I jump back to the previous buffer with <C-^> (unrelated to your question),
-" I jump to the declaration of BlaBlaClassName in
-" /path/not/knowable/BlaBlaClassName.php again with <C-]> thanks to a tagsfile
-" generated with ctags.
-" "
-" ,ev  to open .vimrc file
-" :sp, vsp for slit
-" :bp/n to go to previous or next buffer
-" Ctrl w and | to expant the vertical split and = to make them equal again
-" Ctrl w = to make them equal 
-" You can always see the full path to the current editfile by using 
-
-"    :echo expand('%:p') 
-
-" :bp to go to your previous location
-" vim-vinegar allows you to use - to move up a folder
-"       d will create a folder
-"       D will detele a file, or if you are on a file name, Capital D will 
-" detele the file -
-"       % will create a new file (so click - first and then %) 
-"
-" Hit Ctrl 6 to go back to your previous point of editing
-
-
-" Syntax for multiple tag files are
-" set tags=/my/dir1/tags, /my/dir2/tags
 set tags=tags;$HOME/.vim/tags/ "recursively searches directory for 'tags' file
 
 " TagList Plugin Configuration
@@ -337,10 +308,42 @@ imap <up> <nop>
 imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
+set path=**
 "------------------------Tips and Tricks --------------"
+" That's perfectly normal, see ":help CtrlP", there's a command that you
+" can run to clear cache, from memory (I'm AFD) it's :ClearCtrlPCache
+" or just press F5
 " zz bring cursor to middle of screen
 "  
 
+" jump to the function definition using Ctrl-]
+" I jump to /path/not/knowable/BlaBlaClassName.php with gf,
+" I jump back to the previous buffer with <C-^> (unrelated to your question),
+" I jump to the declaration of BlaBlaClassName in
+" /path/not/knowable/BlaBlaClassName.php again with <C-]> thanks to a tagsfile
+" generated with ctags.
+" "
+" ,ev  to open .vimrc file
+" :sp, vsp for slit
+" :bp/n to go to previous or next buffer
+" Ctrl w and | to expant the vertical split and = to make them equal again
+" Ctrl w = to make them equal 
+" You can always see the full path to the current editfile by using 
+
+"    :echo expand('%:p') 
+
+" :bp to go to your previous location
+" vim-vinegar allows you to use - to move up a folder
+"       d will create a folder
+"       D will detele a file, or if you are on a file name, Capital D will 
+" detele the file -
+"       % will create a new file (so click - first and then %) 
+"
+" Hit Ctrl 6 to go back to your previous point of editing
+
+
+" Syntax for multiple tag files are
+" set tags=/my/dir1/tags, /my/dir2/tags
 
 "--------------------------Markers
 " m Capital Letter, mA to place a marker and find it across files
