@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 ": -----------------------------Plugin Management--------"
 " set the runtime path to include Vundle and initialize
@@ -13,13 +12,11 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required "
->>>>>>> bcd921a52cf220b326fc28fef53dfdae84c4eacd
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-vinegar' 
 Plugin 'tpope/vim-fugitive'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'auto-pairs'
-<<<<<<< HEAD
 Plugin 'scrooloose/nerdtree'
 Plugin 'pyflakes'
 Plugin 'tpope/vim-surround'
@@ -78,4 +75,3 @@ Plugin 'scrooloose/nerdtree'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
->>>>>>> bcd921a52cf220b326fc28fef53dfdae84c4eacd
