@@ -1,0 +1,490 @@
+set nocompatible    " we want the latest vim settings
+set clipboard=autoselect,unnamed
+
+so $HOME/.vim/plugins.vim
+
+
+"-------------General Settings--------------"
+set backspace=indent,eol,start          "Make backspace behave like every other editor.
+let mapleader = ',' 			      	"The default leader is \, but a comma is much better.
+" Put your non-Plugin stuff after this line
+set tabstop=4       " numbers of spaces of tab character
+set shiftwidth=4    " numbers of spaces to (auto)indent
+set scrolloff=3     " keep 3 lines when scrolling
+set showcmd         " display incomplete commands
+set showmatch
+set showmode        " show mode in status bar(insert/replace)
+set matchtime=2     " show matching bracket for 0.2 sec 
+set ruler           " show the cursor position all the time
+set visualbell t_vb=    " turn off error beep/flash
+set novisualbell    " turn off visual bell
+set nobackup        " do not keep a backup file
+set noswapfile
+set number          " show line numbers
+set numberwidth=4   " line numbering takes up 5 spaces
+set ignorecase      " ignore case when searching
+set nowrap          " stop lines from wrapping
+set smartcase       " But become case sensitive if you type uppsercase
+set title           " don't show "Thanks for flying vim"
+set ttyfast         " smoother changes
+set modeline        " last lines in document sets vim mode
+set modelines=3     " number lines checked for modelines
+set shortmess=atI   " Abbreviate messages
+set nostartofline   " don't jump to first character when paging
+set whichwrap=b,s,h,l,<,>,[,]   " move freely between files
+set undolevels=200
+set cpoptions=$cF
+set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.DS_Store,*.db
+
+set laststatus=2
+set statusline=%F%m%r%h%w\ [TYPE=%Y\ %{&ff}]\ [%l/%L\ (%p%%)]  
+set noautoindent    " turn off by default, enable for specific filetypes
+set smartindent   " turn off by default, enable for specific filetypes/bs
+set smarttab       " turn off by default, enable for specific filetypes
+set complete =.,w,b,u 
+
+" Vim sensible settings {{{
+set nocompatible
+set encoding=utf-8
+set listchars=trail:.,tab:>\ ,eol:$
+set lazyredraw
+set laststatus=2
+set incsearch hlsearch
+set backspace=indent,eol,start
+set nostartofline
+set autoread
+set scrolloff=3
+set wildmenu wildignorecase wildmode=list:longest,full
+set cursorline
+set ignorecase smartcase
+set showmode showcmd
+set shortmess+=I
+set hidden
+set history=1000
+set complete-=i completeopt=menu
+set splitright splitbelow
+set display+=lastline
+set foldenable foldmethod=syntax foldlevelstart=99
+set ttimeoutlen=50
+set switchbuf=useopen
+set mouse=a
+set breakindent
+set autoindent
+set smarttab
+
+"Strictly necessary for Powerline
+set encoding=utf-8
+"Set to whatever font you like.
+set guifont=Inconsolata\ for\ Powerline:h12
+
+filetype plugin indent on
+syntax on
+"-------------General Settings--------------"
+" NERD_tree config
+
+let NERDTreeChDirMode=2
+let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
+let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\.bak$', '\~$']
+let NERDTreeShowBookmarks=1
+
+" Syntax for multiple tag files are
+" set tags=/my/dir1/tags, /my/dir2/tags
+set tags=tags;$HOME/.vim/tags/ "recursively searches directory for 'tags' file
+
+" TagList Plugin Configuration
+let Tlist_Ctags_Cmd='/usr/bin/ctags' " point taglist to ctags
+let Tlist_GainFocus_On_ToggleOpen = 1      " Focus on the taglist when its toggled
+let Tlist_Close_On_Select = 1              " Close when something's selected
+let Tlist_Use_Right_Window = 1             " Project uses the left window
+let Tlist_File_Fold_Auto_Close = 1         " Close folds for inactive files
+
+" SCMDiff Plugin Configuration
+let SCMDiffCommand = 'git'
+
+set autowriteall       " auto saves changes when quitting and swiching buffer
+set expandtab       " tabs are converted to spaces
+set sm              " show matching braces, somewhat annoying...
+
+" remove ALL auto-commands so there are no dupes
+autocmd!
+if has("autocmd")
+    " Restore cursor position
+    au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+
+    " Filetypes (au = autocmd)
+    au FileType helpfile set nonumber      " no line numbers when viewing help
+    au FileType helpfile nnoremap <buffer><cr> <c-]>   " Enter selects subject
+    au FileType helpfile nnoremap <buffer><bs> <c-T>   " Backspace to go back
+    
+    " When using mutt, text width=72
+    au FileType mail,tex set textwidth=72
+    au FileType cpp,c,java,sh,pl,php,py,asp  set autoindent
+    au FileType cpp,c,java,sh,pl,php,py,asp  set smartindent
+    au FileType cpp,c,java,sh,pl,php,py,asp  set cindent
+    au FileType py set foldmethod=indent
+    au FileType py set textwidth=79  " PEP-8 friendly
+    au FileType py inoremap # X#
+    au FileType py set expandtab
+    au FileType py set omnifunc=pythoncomplete#Complete
+    autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+    autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+    "au BufRead mutt*[0-9] set tw=72
+    
+    " Automatically chmod +x Shell scripts
+    au BufWritePost   *.sh             !chmod +x %
+
+    " File formats
+    au BufNewFile,BufRead  *.pls    set syntax=dosini
+    au BufNewFile,BufRead  modprobe.conf    set syntax=modconf
+endif
+
+" move among buffers with CTRL
+map <C-J> :bnext<CR>
+map <C-K> :bprev<CR>
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+nnoremap <leader>e :CtrlP<cr>
+nnoremap <leader>E :CtrlPMRUFiles<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>t :CtrlPBufTag<cr>
+nnoremap <leader>T :CtrlPTag<cr>
+nnoremap <leader>r :CtrlPRTS<cr>
+nnoremap <leader>l :CtrlPLine<cr>
+
+" In the lines below, the first option tells ctrlp to persist the cache in the configured location, 
+" so when you launch vim again, it will read from there and load the cache (much faster).
+" The second option configures ctrlp to use ag (the_silver_searcher) instead of vim's 
+" native globpath() apis to search for files, this will drastically improve it's scanning speed, if you 
+" don't want to use ag, you can even use plain old grep and it still should be significantly faster. Check :h 'g:ctrlp_user_command' for more details.
+"
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+
+" Use silver searcher
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_clear_cache_on_exit=0
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
+
+
+" This is for buffer management
+
+:map <F4> :bd<CR>
+set wildchar=<Tab> wildmenu wildmode=full
+set wildcharm=<C-Z>
+"Use F10 to see the list of buffers
+nnoremap <F10> :b <C-Z>
+" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+nnoremap <silent> <M-F12> :BufExplorer<CR>
+nnoremap <silent> <F12> :bn<CR>
+nnoremap <silent> <S-F12> :bp<CR>
+" Mappings to access buffers (don't use "\p" because a
+" delay before pressing "p" would accidentally paste).
+" \l       : list buffers
+" \b \f \g : go back/forward/last-used
+" \1 \2 \3 : go to buffer 1/2/3 etc
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
+" It's useful to show the buffer number in the status line.
+set laststatus=2 
+"set statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+"The following lets you type Ngb to jump to buffer number N (a number from 1 to 99). For example, typing 12gb would jump to buffer 12.
+
+let c = 1
+while c <= 99
+  execute "nnoremap " . c . "gb :" . c . "b\<CR>"
+  let c += 1
+endwhile
+set bs=indent,eol,start " # Allow backspacing over everything in insert mode
+map <C-a> <esc>ggVG<CR>     " # Select all lines in a doc
+let g:Powerline_symbols = "fancy"
+
+
+
+"-------------Search--------------"
+
+set hlsearch        " highlight searches
+set incsearch       " do incremental searching
+
+
+
+
+
+"-------------Mappings--------------"
+
+"Make it easy to edit the Vimrc file.
+nmap <Leader>ev :tabedit $MYVIMRC<cr>
+nmap <Leader>w  :w<cr>
+"Add simple highlight removal.
+nmap <Leader><space> :nohlsearch<cr>
+nmap <Leader>f :tag<space>
+" Keyboard mappings
+map <F1> :previous<CR>  " map F1 to open previous buffer
+map <F2> :next<CR>      " map F2 to open next buffer
+map <F3> :NERDTreeToggle<CR>" map F3 to open NERDTree
+map <F7> :TlistToggle<CR> " map F7 to toggle the Tag Listing
+map <silent> <C-N> :silent noh<CR> " turn off highlighted search
+map ,v :sp ~/.vimrc<cr> " edit my .vimrc file in a split
+map ,e :e ~/.vimrc<cr>      " edit my .vimrc file
+map ,u :source ~/.vimrc<cr> " update the system settings from my vimrc file
+map ,p :Lodgeit<CR>         " pastes selection / file to paste.pocoo.org
+map ,ft :%s/	/    /g<CR> " replace all tabs with 4 spaces
+map ,d :call <SID>SCMDiff()<CR>
+
+
+" Make Nerdtree easier to toggle
+
+nmap <Leader>. :NERDTreeToggle<cr>
+"-------------------------- Viewport Controls -----------"
+" ie moving between split panes
+set splitbelow
+set splitright
+map <silent>,h <C-w>h 
+map <silent>,j <C-w>j
+map <silent>,k <C-w>k
+map <silent>,l <C-w>l
+
+map <silent><C-left> <C-T>  " step out of a python function
+map <silent><C-right> <C-]> " follow a python function 
+
+" Map django specific files
+nmap <leader>m :e models.py<CR>
+
+nmap <leader>a :e admin.py<CR>
+"
+"-------------Visuals-----------------------------------"
+"
+
+syntax enable                    " syntax highlighing
+
+set ls=2                     " allways show status line
+set linespace=15   			 " Macvim-specific line-height.
+let g:ctrlp_working_path_mode = 0
+"search down iinto subfolders
+"provides tab-complete for all file-related tasks
+"
+set path+=**
+"" Display all matching files when we tab complete
+set wildmenu
+" NOW WE CAN:
+" - Hit tab to :find by partial match
+" - Use * to make it fuzzy
+"
+"
+" THINGS TO CONSIDER:
+" - :b lets you autocomplete any open buffer
+
+
+" TAG JUMPING:
+
+" Create the `tags` file (may need to install ctags first)
+command! MakeTags !ctags -R .
+
+" NOW WE CAN:
+" - Use ^] to jump to tag under cursor
+" - Use g^] for ambiguous tags
+" - Use ^t to jump back up the tag stack
+"
+"-------------------------Tips and Tricks --------------"
+"
+" ,ev  to open .vimrc file
+" :sp, vsp for slit
+" :bp/n to go to previous or next buffer
+" Ctrl w and | to expant the vertical split and = to make them equal again
+" Ctrl w = to make them equal 
+" You can always see the full path to the current editfile by using 
+
+"    :echo expand('%:p') 
+
+" :bp to go to your previous location
+" vim-vinegar allows you to use - to move up a folder
+"       d will create a folder
+"       D will detele a file, or if you are on a file name, Capital D will 
+"       detele the file -
+"       % will create a new file (so click - first and then %) 
+" On Windows: Ctrl shift 6 will cycle through open buffers
+
+" Line managent 
+   " Select entire line Capital V
+    " copy the line: yy
+    " delete the line: dd
+    " indent the line: >> or <<
+    " select the current paragraph: Vap or Vip
+    " delete from the current line to the end of the file 0dg
+" Capital J  to join 2 lines together.
+" Yiw to yank the inner word ("copy") 
+" C-y from your insertion point start copying the line abovev- Must be in
+"   insert mode first
+" C-R equal sign, be in insert mode, run vim script and copy result on to file
+" C-O takes you out of insert mode, you can run C-D for example to detele 
+"   everything after your insertion point and jump back to insert.
+
+
+" TODO FIX C-t should tab the entire line but does not work yet.
+" TODO FIX C-W should delete entier word but in cmder closes the window
+" Ctrl Shift V to vselect block vertical mode
+" Remove 0 or more characters from begining of each line globaly
+"    :%s/^.\{0,5\}//g
+" 
+" : I{string}<ESC> will insert {string} at the start
+"    of block on every line of the block, provided that the line extends into the
+"    block.  Thus lines that are short will remain unmodified.  TABs are split to
+"    retain visual columns.
+"use :help v_b_I for more info
+"
+"	   ** Type  d$	to delete to the end of the line. *
+ " dj deletes two lines  
+" dvj deletes from the cursor position until the character below the cursor  
+" d<C-V>j deletes the character under the cursor and the character below the cursor.  
+" 
+" )			[count] sentences forward.  |exclusive| motion.
+" {			[count] paragraphs backward.  |exclusive| motion.
+" }			[count] paragraphs forward.  |exclusive| motion.
+" ]]			[count] sections forward or to the next '{' in the
+" 			first column.  When used after an operator, then also
+" 			stops below a '}' in the first column.  |exclusive|
+" 			Note that |exclusive-linewise| often applies.
+" ][			[count] sections forward or to the next '}' in the
+" 			first column.  |exclusive|
+" 			Note that |exclusive-linewise| often applies.
+" [[			[count] sections backward or to the previous '{' in
+" 			the first column.  |exclusive|
+" 			Note that |exclusive-linewise| often applies.
+" []			[count] sections backward or to the previous '}' in
+" 			the first column.  |exclusive|
+" 			Note that |exclusive-linewise| often applies.
+" g'{mark}  g`{mark}
+" 			Jump to the {mark}, but don't change the jumplist when
+" 			jumping within the current buffer.  Example:  
+" 
+" '(  `(			To the start of the current sentence, like the |(|
+" 			command.  {not in Vi}
+" ')  `)			To the end of the current sentence, like the |)|
+" 			command.  {not in Vi}
+" '{  `{			To the start of the current paragraph, like the |{|
+" '}  `}			To the end of the current paragraph, like the |}|
+" :g/^*/d			detete all lines that begin with 
+" :g/^$/d			detete all blank lines
+" CTRL-O			Go to [count] Older cursor position in jump list
+" CTRL-I			Go to [count] newer cursor position in jump list
+" :command and Ctrl D to display a list of available options
+
+"************** Add a character at the begining of each line **************
+" Use C-v to enter visual block mode
+" up/down to select column
+" shift i, enter the text u want
+" press Esc
+" x	delete character under the cursor (short for "dl")
+" X	delete character before the cursor (short for "dh")
+" D	delete from cursor to end of line (short for "d$")
+" dw	delete from cursor to next start of word
+" db	delete from cursor to previous start of word
+" diw	delete word under the cursor (excluding white space)
+" daw	delete word under the cursor (including white space)
+" dG	delete until the end of the file
+" dgg	delete until the start of the file
+    " If you use "c" instead of "d" they become change commands.  And with "y" you
+    " yank the text.  And so forth.
+
+
+" Git Cheatsheet http://ndpsoftware.com/git-cheatsheet.html#loc=remote_repo;
+"
+"
+"http://marklodato.github.com/visual-git-guide/index-en.html 
+" vim --version  | grep python
+" TagList Plugin Configuration
+set cursorline
+set cursorcolumn
+hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white
+" nnoremap <F5> :UndotreeToggle<cr>
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
+inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
+inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+nnoremap <leader>e :CtrlP<cr>
+nnoremap <leader>E :CtrlPMRUFiles<cr>
+nnoremap <leader>b :CtrlPBuffer<cr>
+nnoremap <leader>t :CtrlPBufTag<cr>
+nnoremap <leader>T :CtrlPTag<cr>
+nnoremap <leader>r :CtrlPRTS<cr>
+nnoremap <leader>l :CtrlPLine<cr>
+
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+autocmd BufWritePre *.py :%s/\s\+$//e
+
+" Set visuals ---------------------------------------------------------
+set cursorline
+hi CursorLine guibg=Grey40
+hi CursorLine cterm=underline
+" It is useful to toggle highlighting on and off by pressing one key in editor. Add these line to your vimrc:
+:nnoremap H :set cursorline! cursorcolumn!<CR>
+set foldcolumn=2
+set spelllang=en
+set spell
+set spellsuggest=best,5
+" By turning on spell-checking in our ~/.vimrc, we’ll be turning on word completion as well. 
+" The following command will let us press CTRL-N or CTRL-P in insert-mode to complete the word we’re typing!
+set complete+=kspell
+" This command simply overwrites the gf command to instead open the file under
+" the cursor with the :edit command—and if it does not exist, then open a new
+" empty buffer.
+:map gf :edit <cfile><CR>
+" function! NumberToggle()
+"   if(&relativenumber == 1)
+"     set number
+"   else
+"     set relativenumber
+"   endif
+" endfunc
+" nnoremap <C-n> :call NumberToggle()<cr>
+" disable arrow keys
+" Disable Arrow keys in Escape mode
+noremap <up> <C-w><up>
+noremap <down> <C-w><down>
+noremap <left> <C-w><left>
+noremap <right> <C-w><right> 
+set relativenumber
+set number
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+" turn off bells
+set noeb vb t_vb=
+
+" copy cut and paste settings for clipboard
+vmap <C-c> "+y
+vmap <C-x> "+c
+vmap <C-v> c<ESC>"+p
+imap <C-v> <C-r><C-o>+
