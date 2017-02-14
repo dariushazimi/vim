@@ -3,6 +3,16 @@ set nocompatible    " we want the latest vim settings
 so ~/.vim/plugins.vim
 
 "-------------General Settings--------------"
+nmap <silent>  ;v  :next $MYVIMRC<CR>
+
+augroup VimReload
+        autocmd!
+        autocmd BufWritePost  $MYVIMRC  source $MYVIMRC
+augroup END
+
+
+
+
 set backspace=indent,eol,start          "Make backspace behave like every other editor.
 let mapleader = ',' 			      	"The default leader is \, but a comma is much better.
 " Put your non-Plugin stuff after this line
@@ -101,7 +111,7 @@ endif
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
+" let g:ctrlp_working_path_mode = 'ra'
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
 " This is for buffer management
@@ -205,37 +215,7 @@ autocmd FileType python set sw=4
 autocmd FileType python set ts=4
 autocmd FileType python set sts=4
 "
-"colorscheme solarized
 " let g:solarized_termcolors=256
-"-------------------------Tips and Tricks --------------"
-" jump to the function definition using Ctrl-]
-" I jump to /path/not/knowable/BlaBlaClassName.php with gf,
-" I jump back to the previous buffer with <C-^> (unrelated to your question),
-" I jump to the declaration of BlaBlaClassName in
-" /path/not/knowable/BlaBlaClassName.php again with <C-]> thanks to a tagsfile
-" generated with ctags.
-" "
-" ,ev  to open .vimrc file
-" :sp, vsp for slit
-" :bp/n to go to previous or next buffer
-" Ctrl w and | to expant the vertical split and = to make them equal again
-" Ctrl w = to make them equal 
-" You can always see the full path to the current editfile by using 
-
-"    :echo expand('%:p') 
-
-" :bp to go to your previous location
-" vim-vinegar allows you to use - to move up a folder
-"       d will create a folder
-"       D will detele a file, or if you are on a file name, Capital D will 
-" detele the file -
-"       % will create a new file (so click - first and then %) 
-"
-" Hit Ctrl 6 to go back to your previous point of editing
-
-
-" Syntax for multiple tag files are
-" set tags=/my/dir1/tags, /my/dir2/tags
 set tags=tags;$HOME/.vim/tags/ "recursively searches directory for 'tags' file
 
 " TagList Plugin Configuration
@@ -284,7 +264,6 @@ map <F7> :TlistToggle<CR> " map F7 to toggle the Tag Listing
 
 
 let g:molokai_original = 1
-colorscheme ChocolateLiquor
 
 
 " Syntastic defaults""
@@ -308,7 +287,6 @@ set directory=~/.vim/swap//
 set undodir=~/.vim/undo//
 
 
-colorscheme badwolf  
 set cursorline
 set cursorcolumn
 
@@ -337,10 +315,100 @@ imap <up> <nop>
 imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
+set path=**
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+"
+" " Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'"
+"This allows buffers to be hidden if you've modified a buffer.
+" This is almost a must if you wish to use buffers in this way.
+set hidden
+"
+" " To open a new empty buffer
+" " This replaces :tabnew which I used to bind to this mapping
+nmap <leader>T :enew<cr>
+"
+" " Move to the next buffer
+nmap <leader>l :bnext<CR>
+"
+"" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" " This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+"
+"" Show all open buffers and their status
+nmap <leader>bl :s<CR>
+"setup some default ignores
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+  \}
+
+" Use the nearest .git directory as the cwd
+" " This makes a lot of sense if you are working on a project that is in version
+" " control. It also supports works with .svn, .hg, .bzr.
+let g:ctrlp_working_path_mode = 'r'
+"
+" " Use a leader instead of the actual named binding
+nmap <leader>p :CtrlP<cr>
+"
+"" Easy bindings for its various modes
+nmap <leader>bb :CtrlPBuffer<cr>
+nmap <leader>bm :CtrlPMixed<cr>
+nmap <leader>bs :CtrlPMRU<cr>"
+
+nmap  S  :%s//g<LEFT><LEFT>
+nmap <expr>  M  ':%s/' . @/ . '//g<LEFT><LEFT>'
+
+nnoremap    v    <C-V>
+nnoremap  <C-V>    v
+
+
+noremap <up> <C-w><up>
+noremap <down> <C-w><down>
+noremap <left> <C-w><left>
+noremap <right> <C-w><right> 
+colorscheme railscasts
+" ---------- Experimental lines
+" "
 "------------------------Tips and Tricks --------------"
+" That's perfectly normal, see ":help CtrlP", there's a command that you
+" can run to clear cache, from memory (I'm AFD) it's :ClearCtrlPCache
+" or just press F5
 " zz bring cursor to middle of screen
 "  
 
+" jump to the function definition using Ctrl-]
+" I jump to /path/not/knowable/BlaBlaClassName.php with gf,
+" I jump back to the previous buffer with <C-^> (unrelated to your question),
+" I jump to the declaration of BlaBlaClassName in
+" /path/not/knowable/BlaBlaClassName.php again with <C-]> thanks to a tagsfile
+" generated with ctags.
+" "
+" ,ev  to open .vimrc file
+" :sp, vsp for slit
+" :bp/n to go to previous or next buffer
+" Ctrl w and | to expant the vertical split and = to make them equal again
+" Ctrl w = to make them equal 
+" You can always see the full path to the current editfile by using 
+
+"    :echo expand('%:p') 
+
+" :bp to go to your previous location
+" vim-vinegar allows you to use - to move up a folder
+"       d will create a folder
+"       D will detele a file, or if you are on a file name, Capital D will 
+" detele the file -
+"       % will create a new file (so click - first and then %) 
+"
+" Hit Ctrl 6 to go back to your previous point of editing
+
+
+" Syntax for multiple tag files are
+" set tags=/my/dir1/tags, /my/dir2/tags
 
 "--------------------------Markers
 " m Capital Letter, mA to place a marker and find it across files
