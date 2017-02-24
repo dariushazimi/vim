@@ -5,6 +5,9 @@ set nocompatible    " we want the latest vim settings
 so ~/.vim/plugins.vim
 " }}}
 
+
+
+
 "-------------General Settings--------------"
 nmap <silent>  ;v  :next $MYVIMRC<CR>
 
@@ -13,17 +16,8 @@ augroup VimReload
         autocmd BufWritePost  $MYVIMRC  source $MYVIMRC
 augroup END
 
-" display cursor co-ords at all times
-set ruler
-set cursorline
-
-" display number of selected chars, lines, or size of blocks.
-set showcmd
 
 
-" show matching brackets, etc, for 1/10th of a second
-set showmatch
-set matchtime=1
 
 set backspace=indent,eol,start          "Make backspace behave like every other editor.
 let mapleader = ',' 			      	"The default leader is \, but a comma is much better.
@@ -38,6 +32,7 @@ set matchtime=2     " show matching bracket for 0.2 sec
 set ruler           " show the cursor position all the time
 set visualbell t_vb=    " turn off error beep/flash
 set novisualbell    " turn off visual bell
+set nobackup        " do not keep a backup file
 set number          " show line numbers
 set numberwidth=4   " line numbering takes up 5 spaces
 set ignorecase      " ignore case when searching
@@ -130,7 +125,7 @@ set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
 " This is for buffer management
 
-:map <f4> :bd<cr>
+:map <F4> :bd<CR>
 set wildchar=<Tab> wildmenu wildmode=full
 set wildcharm=<C-Z>
 "Use F10 to see the list of buffers
@@ -390,196 +385,3 @@ nmap <Leader>hr <Plug>GitGutterUndoHunk
 nmap <Leader>hv <Plug>GitGutterPreviewHunk
 set autochdir 
 set tags+=./tags;
-
-" allow cursor to be positioned one char past end of line
-" and apply operations to all of selection including last char
-set selection=exclusive
-" Make searches case-sensitive only if they contain upper-case characters
-set ignorecase
-set smartcase
-" show search matches as the search pattern is typed
-set incsearch
-" search-next wraps back to start of file
-set wrapscan
-" highlight last search matches
-set hlsearch
-" map key to dismiss search highlightedness
-map <bs> :noh<CR>
-" set grep to be grep, better have cygwin installed & on the path!
-set grepprg=grep\ -n\ --exclude=\"*.pyc\"\ --exclude=tags\ --exclude-dir=domains\ --exclude-dir=.git\ --exclude-dir=.svn\ --exclude-dir=.hg\ --exclude-dir=CACHE
-" grep for word under cursor
-noremap <Leader>g :silent grep -rw '<C-r><C-w>' .<CR>:copen<CR>
-" stop pyflakes from polluting the copen quickfix pane
-let g:pyflakes_use_quickfix = 0
-" map F3 to search jump thru grep results from copen
-map <F3> :cnext<CR>
-
-" map cut & paste to what they bloody should be
-vnoremap <C-c> "+y
-vnoremap <C-x> "+x
-map <C-v> "+gP
-
-" ctrl-s to save
-map <C-s> :w<CR>
-map! <C-s> <Esc>:w<CR>
-
-" move up/down by visible lines on long wrapped lines of text
-nnoremap k gk
-nnoremap j gj
-
-" map sudo-write-file to w!! in command line
-cmap w!! %!sudo tee > /dev/null %
-
-"remap jj to escape in insert mode.
-inoremap jj <Esc>
-
-" make Y yank to end of line (consistent with C and D)
-noremap Y y$
-" make tab completion for files/buffers act like bash
-set wildmenu
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-" sane editing
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-
-" convert all typed tabs to spaces
-set expandtab
-" when joining lines, don't insert two spaces after punctuation
-set nojoinspaces
-
-" display long lines as wrapped
-set wrap
-
-" wrap at word breaks
-set linebreak
-" show an ellipsis at the start of wrapped lines
-set showbreak=…
-" discretely highlight lines which are longer than the specified width
-" only long lines are highlighted (making this less intrusive than colorcolumn)
-" width defaults to 80. pass 0 to turn off.
-function! s:HighlightLongLines(width)
-    let targetWidth = a:width != '' ? a:width : 80
-    if targetWidth > 0
-        exec 'match ColorColumn /\%' . (targetWidth + 1) . 'v/'
-    else
-        exec 'match'
-    endif
-endfunction
-
-
-" toggle the highlighting of long lines
-command! -nargs=? HighlightLongLines call s:HighlightLongLines('<args>')
-let s:highlight_long_lines = 0
-function! ToggleHighlightLongLines()
-    if s:highlight_long_lines == 0
-        HighlightLongLines
-        let s:highlight_long_lines = 1
-    else
-        HighlightLongLines 0
-        let s:highlight_long_lines = 0
-    endif
-endfunction
-noremap <leader>L :call ToggleHighlightLongLines()<cr>
-
-" toggle wrapped appearance of long lines
-function! ToggleWrap()
-    if &wrap == 0
-        set wrap
-    else
-        set nowrap
-    endif
-endfunction
-noremap <leader>w :call ToggleWrap()<cr>
-" enable automatic yanking to and pasting from the selection
-set clipboard+=unnamed
-
-" close buffer without closing window
-noremap <C-BS> :bp<cr>bd #<cr>
-
-
-" tags for syntax highlighting
-syntax on
-
-" allegedly faster regex engine for syntax stuff
-set regexpengine=1 
-
-"make sure highlighting works all the way down long files
-autocmd BufEnter * :syntax sync fromstart
-
-
-" places to look for tags files:
-set tags=./tags,tags
-" recursively search file's parent dirs for tags file
-" set tags+=./tags;/
-" recursively search cwd's parent dirs for tags file
-set tags+=tags;/
-
-" generate tags for all files in the current dir (recursive on subdirs)
-"map <f12> :!start /min ctags -R --exclude=build .<cr>
-map <f12> :!ctags -R --exclude=build .<cr>
-map <Leader>C :!ctags -R --exclude=build .<cr>
-map <f11> :!pysmell .<cr>
-
-" Jedi autocompleter
-let g:jedi#goto_assignments_command = "<leader>a"  "default ,g conflicts with grep
-let g:jedi#goto_command = "<leader>t"   "default ,d conflicts with dontify
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#smart_auto_mappings = 0  "do not autotype the import statement
-
-" switch on colourful brackets
-let g:rainbow_active = 1
-
-
-let g:syntastic_python_python_exec = 'python'
-let g:syntastic_html_checkers=['jshint', 'tidy']
-let g:syntastic_htmldjango_checkers=['jshint', 'tidy']
-let g:syntastic_javascript_checkers=['eslint']
-let g:syntastic_html_jshint_args="--extract=always"
-
-" ignore empty element errors in html-tidy
-let g:syntastic_html_tidy_ignore_errors=['trimming empty', 'escaping malformed URI']
-
-" switch off asciidoc checker, cos it takes too long.
-let g:syntastic_asciidoc_checkers=['']
-" use loclist to display errors
-let g:syntastic_always_populate_loc_list = 1
-" map F4 to search jump thru errors of lopen
-map <F4> :lnext<CR>
-" nb, syntastic may not find checkers installed in ~/.local
-
-
-" files to hide in directory listings
-let g:netrw_list_hide='\.py[oc]$,\.svn/$,\.git/$,\.hg/$'
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.pyc,*/.idea/*,*/.DS_Store,*/virtualenv,*/node_modules/*
-
-" aliases for window switching
-noremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
-noremap <C-k> <C-w>k
-noremap <C-j> <C-w>j
-
-
-" CtrlP settings
-let g:ctrlp_map = '<c-p>'
-" don't try to be too clever with working paths. 
-let g:ctrlp_working_path_mode = ''
-noremap <Leader>f :CtrlP<CR>
-noremap <Leader>b :CtrlPBuffer<CR>
-noremap <Leader>p :CtrlPClearAllCaches<CR>
-
-" Change the color scheme from a list of color scheme names.
-" Adapted Version 2010-09-12 from http://vim.wikia.com/wiki/VimTip341
-" Press key   shift - F8 random scheme
-if v:version < 700 || exists('loaded_setcolors') || &cp
-  finish
-endif
-
-let loaded_setcolors = 1
-" Get all colours from .vim/colors
-let paths = split(globpath(&runtimepath, 'colors/*.vim'), "\n")
-let s:mycolors = map(paths, 'fnamemodify(v:val, ":t:r")')
-
-nnoremap <Space>w :w<CR>
