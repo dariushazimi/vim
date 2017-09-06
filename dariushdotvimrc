@@ -1,0 +1,608 @@
+" Dariush Azimi
+" Sep 2017:w
+                        "
+" setup {{{
+
+set nocompatible    " we want the latest vim settings
+
+so ~/.vim/plugins.vim
+" }}}
+
+"-------------General Settings--------------"
+nmap <silent>  ;v  :next $MYVIMRC<CR>
+
+augroup VimReload
+        autocmd!
+        autocmd BufWritePost  $MYVIMRC  source $MYVIMRC
+augroup END
+
+" display cursor co-ords at all times
+set ruler
+set cursorline
+
+" display number of selected chars, lines, or size of blocks.
+set showcmd
+
+
+" show matching brackets, etc, for 1/10th of a second
+set showmatch
+set matchtime=1
+
+set backspace=indent,eol,start          "Make backspace behave like every other editor.
+let mapleader = ',' 			      	"The default leader is \, but a comma is much better.
+" Put your non-Plugin stuff after this line
+set tabstop=4       " numbers of spaces of tab character
+set shiftwidth=4    " numbers of spaces to (auto)indent
+set scrolloff=3     " keep 3 lines when scrolling
+set showcmd         " display incomplete commands
+set showmatch
+set showmode        " show mode in status bar(insert/replace)
+set matchtime=2     " show matching bracket for 0.2 sec 
+set ruler           " show the cursor position all the time
+set visualbell t_vb=    " turn off error beep/flash
+set novisualbell    " turn off visual bell
+set number          " show line numbers
+set relativenumber
+set numberwidth=4   " line numbering takes up 5 spaces
+set ignorecase      " ignore case when searching
+set nowrap          " stop lines from wrapping set smartcase       " But become case sensitive if you type uppsercase
+set title           " don't show "Thanks for flying vim"
+set ttyfast         " smoother changes
+set bs=2            " Backspace can delete previous characters
+set modeline        " last lines in document sets vim mode
+set modelines=3     " number lines checked for modelines
+set shortmess=atI   " Abbreviate messages
+set nostartofline   " don't jump to first character when paging
+set whichwrap=b,s,h,l,<,>,[,]   " move freely between files
+set undolevels=2000
+set cpoptions=$cF
+set wildignore=*.o,*.obj,*.bak,*.exe,*.pyc,*.DS_Store,*.db
+set statusline=%F%m%r%h%w\ [TYPE=%Y\ %{&ff}]\ [%l/%L\ (%p%%)]  
+
+set noautoindent    " turn off by default, enable for specific filetypes
+set smartindent   " turn off by default, enable for specific filetypes/bs
+set smarttab       " turn off by default, enable for specific filetypes
+set textwidth=80
+set wrapmargin=2
+"-------------General Settings--------------"
+" NERD_tree config
+
+let NERDTreeChDirMode=2
+let NERDTreeIgnore=['\.vim$', '\~$', '\.pyc$', '\.swp$']
+let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\.bak$', '\~$']
+let NERDTreeShowBookmarks=1
+" Syntax for multiple tag files are
+" set tags=/my/dir1/tags, /my/dir2/tags
+set tags=tags;$HOME/.vim/tags/ "recursively searches directory for 'tags' file
+
+" TagList Plugin Configuration
+let Tlist_Ctags_Cmd='/usr/bin/ctags' " point taglist to ctags
+>>
+>>
+>>
+let Tlist_GainFocus_On_ToggleOpen = 1      " Focus on the taglist when its toggled
+let Tlist_Close_On_Select = 1              " Close when something's selected
+let Tlist_Use_Right_Window = 1             " Project uses the left window
+let Tlist_File_Fold_Auto_Close = 1         " Close folds for inactive files
+
+" SCMDiff Plugin Configuration
+let SCMDiffCommand = 'git'
+
+"set autowrite       " auto saves changes when quitting and swiching buffer
+set expandtab       " tabs are converted to spaces
+set sm              " show matching braces, somewhat annoying...
+
+" remove ALL auto-commands so there are no dupes
+autocmd!
+if has("autocmd")
+   " Restore cursor position
+   au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+
+   " Filetypes (au = autocmd)
+   au FileType helpfile set nonumber      " no line numbers when viewing help
+   au FileType helpfile nnoremap <buffer><cr> <c-]>   " Enter selects subject
+   au FileType helpfile nnoremap <buffer><bs> <c-T>   " Backspace to go back
+   
+   " When using mutt, text width=72
+   au FileType mail,tex set textwidth=72
+   au FileType cpp,c,java,sh,pl,php,py,asp  set autoindent
+   au FileType cpp,c,java,sh,pl,php,py,asp  set smartindent
+   au FileType cpp,c,java,sh,pl,php,py,asp  set cindent
+   au FileType py set foldmethod=indent
+   au FileType py set textwidth=79  " PEP-8 friendly
+   au FileType py inoremap # X#
+   au FileType py set expandtab
+"   au FileType py set omnifunc=pythoncomplete#Complete
+   autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+   autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+   "au BufRead mutt*[0-9] set tw=72
+   
+   " Automatically chmod +x Shell scripts
+   au BufWritePost   *.sh             !chmod +x %
+
+   " File formats
+   au BufNewFile,BufRead  *.pls    set syntax=dosini
+   au BufNewFile,BufRead  modprobe.conf    set syntax=modconf
+endif
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+set runtimepath+=~/.vim/ultisnips_rep
+
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+" This is for buffer management
+
+:map <f4> :bd<cr>
+set wildchar=<Tab> wildmenu wildmode=full
+set wildcharm=<C-Z>
+"Use F10 to see the list of buffers
+nnoremap <F10> :b <C-Z>
+" Buffers - explore/next/previous: Alt-F12, F12, Shift-F12.
+nnoremap <silent> <M-F12> :BufExplorer<CR>
+nnoremap <silent> <F12> :bn<CR>
+nnoremap <silent> <S-F12> :bp<CR>
+" Mappings to access buffers (don't use "\p" because a
+" delay before pressing "p" would accidentally paste).
+" \l       : list buffers
+" \b \f \g : go back/forward/last-used
+" \1 \2 \3 : go to buffer 1/2/3 etc
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
+nnoremap <Leader>s :w<CR>
+
+" It's useful to show the buffer number in the status line.
+set laststatus=2 
+set statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+"The following lets you type Ngb to jump to buffer number N (a number from 1 to 99). For example, typing 12gb would jump to buffer 12.
+
+let c = 1
+while c <= 99
+  execute "nnoremap " . c . "gb :" . c . "b\<CR>"
+  let c += 1
+endwhile
+set bs=indent,eol,start " # Allow backspacing over everything in insert mode
+map <C-a> <esc>ggVG<CR>     " # Select all lines in a doc
+set t_Co=256
+let g:Powerline_symbols = "fancy"
+
+
+
+
+
+
+"-------------Search--------------"
+
+set hlsearch        " highlight searches
+set incsearch       " do incremental searching
+
+" Keyboard mappings
+map <F1> :previous<CR>  " map F1 to open previous buffer
+map <F2> :next<CR>      " map F2 to open next buffer
+map <F3> :NERDTreeToggle<CR>" map F3 to open NERDTree
+map <F7> :TlistToggle<CR> " map F7 to toggle the Tag Listing
+map <silent> <C-N> :silent noh<CR> " turn off highlighted search
+map ,v :sp ~/.vimrc<cr> " edit my .vimrc file in a split
+map ,e :e ~/.vimrc<cr>      " edit my .vimrc file
+map ,u :source ~/.vimrc<cr> " update the system settings from my vimrc file
+map ,p :Lodgeit<CR>         " pastes selection / file to paste.pocoo.org
+map ,ft :%s/	/    /g<CR> " replace all tabs with 4 spaces
+map ,d :call <SID>SCMDiff()<CR>
+
+
+" Make Nerdtree easier to toggle
+
+nmap <Leader>. :NERDTreeToggle<cr>
+"-------------------------- Viewport Controls -----------"
+" ie moving between split panes
+set splitbelow
+set splitright
+map <silent>,h <C-w>h 
+map <silent>,j <C-w>j
+map <silent>,k <C-w>k
+map <silent>,l <C-w>l
+
+map <silent><C-left> <C-T>  " step out of a python function
+map <silent><C-right> <C-]> " follow a python function 
+
+
+
+
+"-------------Visuals-----------------------------------"
+"send current word to CtrlP
+map <F6> <C-P><C-\>w 
+"    syntax on                    " syntax highlighing
+
+set ls=2                     " allways show status line
+set linespace=15   			 " Macvim-specific line-height.
+syntax enable
+set background=dark
+"------------------------
+let g:airline#extensions#tabline#fnamemod = ':t'"
+"This allows buffers to be hidden if you've modified a buffer.
+" This is almost a must if you wish to use buffers in this way.
+set hidden
+"
+set wildmode=longest,list:longest
+set completeopt=menu,preview
+nmap <leader>T :enew<cr>
+"
+" " Move to the next buffer
+nmap <leader>l :bnext<CR>
+"
+"" Move to the previous buffer
+nmap <leader>h :bprevious<CR>
+
+" Close the current buffer and move to the previous one
+" " This replicates the idea of closing a tab
+nmap <leader>bq :bp <BAR> bd #<CR>
+"
+"" Show all open buffers and their status
+nmap <leader>bl :s<CR>
+"setup some default ignores
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+  \}
+
+" Use the nearest .git directory as the cwd
+" " This makes a lot of sense if you are working on a project that is in version
+" " control. It also supports works with .svn, .hg, .bzr.
+let g:ctrlp_working_path_mode = 'r'
+"
+" " Use a leader instead of the actual named binding
+nmap <leader>p :CtrlP<cr>
+"
+"" Easy bindings for its various modes
+nmap <leader>bb :CtrlPBuffer<cr>
+nmap <leader>bm :CtrlPMixed<cr>
+nmap <leader>bs :CtrlPMRU<cr>"
+noremap <Leader>bc :CtrlPClearAllCaches<CR>
+
+nmap  S  :%s//g<LEFT><LEFT>
+nmap <expr>  M  ':%s/' . @/ . '//g<LEFT><LEFT>'
+
+nnoremap    v    <C-V>
+nnoremap  <C-V>    v
+
+
+noremap <up> <C-w><up>
+noremap <down> <C-w><down>
+noremap <left> <C-w><left>
+noremap <right> <C-w><right> 
+colorscheme railscasts
+" ---------- Experimental lines
+" "
+"------------------------Tips and Tricks --------------"
+" That's perfectly normal, see ":help CtrlP", there's a command that you
+" can run to clear cache, from memory (I'm AFD) it's :ClearCtrlPCache
+" or just press F5
+" zz bring cursor to middle of screen
+"  
+
+" jump to the function definition using Ctrl-]
+" I jump to /path/not/knowable/BlaBlaClassName.php with gf,
+" I jump back to the previous buffer with <C-^> (unrelated to your question),
+" I jump to the declaration of BlaBlaClassName in
+" /path/not/knowable/BlaBlaClassName.php again with <C-]> thanks to a tagsfile
+" generated with ctags.
+" "
+" ,ev  to open .vimrc file
+" :sp, vsp for slit
+" :bp/n to go to previous or next buffer
+" Ctrl w and | to expant the vertical split and = to make them equal again
+" Ctrl w = to make them equal 
+" You can always see the full path to the current editfile by using 
+
+"    :echo expand('%:p') 
+
+" :bp to go to your previous location
+" vim-vinegar allows you to use - to move up a folder
+"       d will create a folder
+"       D will detele a file, or if you are on a file name, Capital D will 
+" detele the file -
+"       % will create a new file (so click - first and then %) 
+"
+" Hit Ctrl 6 to go back to your previous point of editing
+
+
+" Syntax for multiple tag files are
+" set tags=/my/dir1/tags, /my/dir2/tags
+
+"--------------------------Markers
+" m Capital Letter, mA to place a marker and find it across files
+
+" 
+" 'A  Marks the line where the cursor jumped from (in current buffer)
+" `A Marks the position where the cursor jumped from (in current buffer) 
+" .A Marks the position where the last change occurred (in current buffer) 
+"  "A  Marks the position where the user last exited the current buffer
+" [  Marks the beginning of the previously changed or yanked text
+" ]  Marks the end of the previously changed or yanked text
+" <  Marks the beginning of the last visual selection
+" >  Marks the end of the last visual selection"`'
+" ]' Next mark line position
+" [' Previous mark line position
+" ]` Next mark line and column position Previous 
+" [` mark line and column position
+
+
+
+" 
+" ,ev  to open .vimrc file
+
+" :sp, vsp for slit
+" :bp/n to go to previous or next buffer
+" Ctrl w and | to expant the vertical split and = to make them equal again
+" Ctrl w = to make them equal 
+" You can always see the full path to the current editfile by using 
+
+"    :echo expand('%:p') 
+
+" :bp to go to your previous location
+" vim-vinegar allows you to use - to move up a folder
+"       d will create a folder
+"       D will detele a file, or if you are on a file name, Capital D will 
+" detele the file -
+"       % will create a new file (so click - first and then %) 
+"
+" Hit Ctrl 6 to go back to your previous point of editingx"
+"
+" replace " double quotes with single quote"
+"%s/\"\([^"]*\)\"/'\1'/g"]
+set guifont=Source\ Code\ Pro\ for\ Powerline:h16
+au FileType htmldjango inoremap {% {% %}<left><left><left>
+au FileType htmldjango inoremap {{ {{ }}<left><left><left>
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-f>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsUsePythonVersion = 2
+if has('autocmd') " ignore this section if your vim does not support autocommands
+    augroup reload_vimrc
+        autocmd!
+        autocmd! BufWritePost $MYVIMRC,$MYGVIMRC nested source %
+    augroup END
+endif
+set clipboard=unnamed,unnamedplus
+set updatetime=250
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+nmap <Leader>ha <Plug>GitGutterStageHunk
+nmap <Leader>hr <Plug>GitGutterUndoHunk
+nmap <Leader>hv <Plug>GitGutterPreviewHunk
+set autochdir 
+set tags+=./tags;
+
+" allow cursor to be positioned one char past end of line
+" and apply operations to all of selection including last char
+set selection=exclusive
+" Make searches case-sensitive only if they contain upper-case characters
+set ignorecase
+set smartcase
+" show search matches as the search pattern is typed
+set incsearch
+" search-next wraps back to start of file
+set wrapscan
+" highlight last search matches
+set hlsearch
+" map key to dismiss search highlightedness
+map <bs> :noh<CR>
+" set grep to be grep, better have cygwin installed & on the path!
+set grepprg=grep\ -n\ --exclude=\"*.pyc\"\ --exclude=tags\ --exclude-dir=domains\ --exclude-dir=.git\ --exclude-dir=.svn\ --exclude-dir=.hg\ --exclude-dir=CACHE
+" grep for word under cursor
+noremap <Leader>g :silent grep -rw '<C-r><C-w>' .<CR>:copen<CR>
+" stop pyflakes from polluting the copen quickfix pane
+let g:pyflakes_use_quickfix = 0
+" map F3 to search jump thru grep results from copen
+map <F3> :cnext<CR>
+
+" map cut & paste to what they bloody should be
+vnoremap <C-c> "+y
+vnoremap <C-x> "+x
+map <C-v> "+gP
+
+" ctrl-s to save
+map <C-s> :w<CR>
+map! <C-s> <Esc>:w<CR>
+
+" move up/down by visible lines on long wrapped lines of text
+nnoremap k gk
+nnoremap j gj
+
+" map sudo-write-file to w!! in command line
+cmap w!! %!sudo tee > /dev/null %
+
+"remap jj to escape in insert mode.
+inoremap jj <Esc>
+
+" make Y yank to end of line (consistent with C and D)
+noremap Y y$
+" make tab completion for files/buffers act like bash
+set wildmenu
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+" sane editing
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+
+" convert all typed tabs to spaces
+set expandtab
+" when joining lines, don't insert two spaces after punctuation
+set nojoinspaces
+
+" display long lines as wrapped
+set wrap
+
+" wrap at word breaks
+set linebreak
+" show an ellipsis at the start of wrapped lines
+" discretely highlight lines which are longer than the specified width
+" only long lines are highlighted (making this less intrusive than colorcolumn)
+" width defaults to 80. pass 0 to turn off.
+function! s:HighlightLongLines(width)
+    let targetWidth = a:width != '' ? a:width : 80
+    if targetWidth > 0
+        exec 'match ColorColumn /\%' . (targetWidth + 1) . 'v/'
+    else
+        exec 'match'
+    endif
+endfunction
+
+
+" toggle the highlighting of long lines
+command! -nargs=? HighlightLongLines call s:HighlightLongLines('<args>')
+let s:highlight_long_lines = 0
+function! ToggleHighlightLongLines()
+    if s:highlight_long_lines == 0
+        HighlightLongLines
+        let s:highlight_long_lines = 1
+    else
+        HighlightLongLines 0
+        let s:highlight_long_lines = 0
+    endif
+endfunction
+noremap <leader>L :call ToggleHighlightLongLines()<cr>
+
+" toggle wrapped appearance of long lines
+function! ToggleWrap()
+    if &wrap == 0
+        set wrap
+    else
+        set nowrap
+    endif
+endfunction
+noremap <leader>w :call ToggleWrap()<cr>
+
+" close buffer without closing window
+noremap <C-BS> :bp<cr>bd #<cr>
+
+
+" tags for syntax highlighting
+syntax on
+
+" allegedly faster regex engine for syntax stuff
+set regexpengine=1 
+
+"make sure highlighting works all the way down long files
+autocmd BufEnter * :syntax sync fromstart
+
+
+" places to look for tags files:
+set tags=./tags,tags
+" recursively search file's parent dirs for tags file
+" set tags+=./tags;/
+" recursively search cwd's parent dirs for tags file
+set tags+=tags;/
+
+" generate tags for all files in the current dir (recursive on subdirs)
+"map <f12> :!start /min ctags -R --exclude=build .<cr>
+map <f12> :!ctags -R --exclude=build .<cr>
+map <Leader>C :!ctags -R --exclude=build .<cr>
+map <f11> :!pysmell .<cr>
+
+" Jedi autocompleter
+let g:jedi#goto_assignments_command = "<leader>a"  "default ,g conflicts with grep
+let g:jedi#goto_command = "<leader>t"   "default ,d conflicts with dontify
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#smart_auto_mappings = 0  "do not autotype the import statement
+
+" switch on colourful brackets
+let g:rainbow_active = 1
+
+
+let g:syntastic_python_python_exec = 'python'
+let g:syntastic_html_checkers=['jshint', 'tidy']
+let g:syntastic_htmldjango_checkers=['jshint', 'tidy']
+let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_html_jshint_args="--extract=always"
+
+" ignore empty element errors in html-tidy
+let g:syntastic_html_tidy_ignore_errors=['trimming empty', 'escaping malformed URI']
+
+" switch off asciidoc checker, cos it takes too long.
+let g:syntastic_asciidoc_checkers=['']
+" use loclist to display errors
+let g:syntastic_always_populate_loc_list = 1
+" map F4 to search jump thru errors of lopen
+map <F4> :lnext<CR>
+" nb, syntastic may not find checkers installed in ~/.local
+
+
+" files to hide in directory listings
+let g:netrw_list_hide='\.py[oc]$,\.svn/$,\.git/$,\.hg/$'
+set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*.pyc,*/.idea/*,*/.DS_Store,*/virtualenv,*/node_modules/*
+
+" aliases for window switching
+noremap <C-l> <C-w>l
+noremap <C-h> <C-w>h
+noremap <C-k> <C-w>k
+noremap <C-j> <C-w>j
+
+
+" CtrlP settings
+let g:ctrlp_map = '<c-p>'
+" don't try to be too clever with working paths. 
+let g:ctrlp_working_path_mode = ''
+
+
+
+"  X. Make Ctrl-P plugin a lot faster for Git projects
+let g:ctrlp_use_caching = 0
+if executable('ag')
+    set grepprg=ag\ --nogroup\ --nocolor
+
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+else
+  let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+  let g:ctrlp_prompt_mappings = {
+    \ 'AcceptSelection("e")': ['<space>', '<cr>', '<2-LeftMouse>'],
+    \ }
+endif
+
+
+" Change the color scheme from a list of color scheme names.
+" Adapted Version 2010-09-12 from http://vim.wikia.com/wiki/VimTip341
+" Press key   shift - F8 random scheme
+if v:version < 700 || exists('loaded_setcolors') || &cp
+  finish
+endif
+
+let loaded_setcolors = 1
+" Get all colours from .vim/colors
+let paths = split(globpath(&runtimepath, 'colors/*.vim'), "\n")
+let s:mycolors = map(paths, 'fnamemodify(v:val, ":t:r")')
+
+nnoremap <Space>w :w<CR>
+nnoremap <Space>g :GundoToggle<CR>
+
+nmap <A-Left> :bp<CR>
+nmap <A-Right> :bn<CR>>
+set guifont=Inconsolata\ for\ Powerline:h15
+let g:Powerline_symbols = 'fancy'
+set encoding=utf-8
+set t_Co=256
+set fillchars+=stl:\ ,stlnc:\
+set term=xterm-256color
+set termencoding=utf-8
+
