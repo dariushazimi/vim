@@ -9,6 +9,7 @@ iabbrev ccopy   Copyright 2018 Dariush Azimi, all rights reserved.
 " ============================================================================
 " Vim-plug initialization
 " Avoid modify this section, unless you are very sure of what you are doing
+
 set nocompatible
 filetype on
 filetype indent on
@@ -73,6 +74,22 @@ set term=screen-256color
 
 " match ErrorMsg '\%>80v.\+'
 set cc=80
+nmap <C-S-P> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+    if !exists("*synstack")
+      return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+set background=dark
+
+
+" Markdown gets auto textwidth
+au Bufread,BufNewFile *.md set filetype=markdown textwidth=80
+au Bufread,BufNewFile *.markdown set textwidth=80
+
+
 
 
 let vim_plug_just_installed = 0
@@ -100,6 +117,7 @@ endif
 " this needs to be here, so vim-plug knows we are declaring the plugins we
 " want to use
 call plug#begin('~/.vim/plugged')
+Plug 'altercation/vim-colors-solarized'
 
 " Plugins from github repos:
 Plug 'iamcco/markdown-preview.vim'
@@ -483,7 +501,6 @@ let g:airline#extensions#whitespace#enabled = 0
 "let g:airline_symbols.linenr = '⭡'
 set guifont=Source\ Code\ Pro\ for\ Powerline
 let g:airline_powerline_fonts=1
-colorscheme sublimemonokai
 " My mappings
 nnoremap <leader>b :CtrlPBuffer<CR>
 let g:ctrlp_working_path_mode = 'ar'
@@ -504,3 +521,5 @@ inoremap jk <esc>
 set autoindent
 
 set foldmethod=indent " z o/c/d to open/close, delete fold:
+
+colorscheme sublimemonokai
