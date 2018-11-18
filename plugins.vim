@@ -1,3 +1,7 @@
+" azimid@gmail.com 
+" Dariush Azimi 
+" Copyright 2018 Dariush Azimi, all rights reserved. 
+"
 " -----------------------------Plugin Management--------"
 " set the runtime path to include Vundle and initialize "
 
