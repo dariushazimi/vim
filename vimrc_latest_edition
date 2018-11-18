@@ -2,14 +2,81 @@
 " http://github.com/dariushazimi
 " version:1.0.1
 " Copyright 2018 Dariush Azimi, all rights reserved. 
-iabbrev @@     azimid@gmail.com
-iabbrev ccopy Copyright 2018 Dariush Azimi, all rights reserved.
+iabbrev @@      azimid@gmail.com
+iabbrev DA     Dariush Azimi
+iabbrev ccopy   Copyright 2018 Dariush Azimi, all rights reserved.
 
 " ============================================================================
 " Vim-plug initialization
 " Avoid modify this section, unless you are very sure of what you are doing
+set nocompatible
+filetype on
+filetype indent on
+syntax enable
+
 let mapleader=','
+set ignorecase
+set hlsearch
+set autoindent
+set smartindent
+set fileencoding=utf-8
+set encoding=utf-8
+set backspace=indent,eol,start
+set ts=2 sts=2 sw=2 expandtab
+
+" Personal mappings
+
+" Normal mode mappings {{{
+nnoremap <C-s> :w<CR>
+nnoremap <leader>ev :vs $MYVIMRC<CR>
+nnoremap <leader>gs :Gstatus<CR><C-W>15+
+nnoremap <leader>m :NERDTreeToggle<CR>
+nnoremap <leader>rs :!clear;rspec --color spec<CR>
+nnoremap <leader>a :Ack 
+nnoremap <leader>d :bd<CR> 
+nnoremap <leader>w :w<CR>
+nnoremap <leader><cr> :noh<CR>
+nnoremap <leader>l :ls<CR>:b
+nnoremap <leader>t :CtrlP<CR>
+nnoremap n nzz
+nnoremap N Nzz
+" }}}
+
+" Visual mode mappings {{{
+vnoremap < <gv
+vnoremap > >gv
+
+" Execute dot in the selection
+vnoremap . :norm.<CR>
+" }}}
+
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+
+set winwidth=84
+set winheight=5
+set winminheight=5
+set winheight=999
+
+set list
+set listchars=tab:▸\ ,eol:¬,nbsp:⋅
+set guifont=PragmataPro
+set guioptions=aAc
+set guioptions-=Be
+set number
+set noswapfile
+set visualbell
+set cursorline
+set term=screen-256color
+
+" match ErrorMsg '\%>80v.\+'
+set cc=80
+
+
 let vim_plug_just_installed = 0
+
 let vim_plug_path = expand('~/.vim/autoload/plug.vim')
 if !filereadable(vim_plug_path)
     echo "Installing Vim-plug..."
@@ -434,3 +501,6 @@ let g:ctrlp_prompt_mappings = {
 \ }
 endif
 inoremap jk <esc>
+set autoindent
+
+set foldmethod=indent " z o/c/d to open/close, delete fold:
